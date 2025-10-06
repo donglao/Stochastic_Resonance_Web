@@ -3,282 +3,243 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="theme-color" content="#0a1931">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stochastic Resonance for Computer Vision</title>
   <style>
-    /* Base styling */
-    body {
-      margin: 0;
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      line-height: 1.6;
-      color: #333;
-      background-color: #f9fafc;
-    }
-    h2 {
-      margin-top: 0;
-      color: #0a1931;
-    }
-    /* Hero section */
-    header {
-      background-image: url('pics/hero.png');
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-      min-height: 40vh;            /* give room for long titles */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: clamp(16px, 4vw, 30px) 20px;
-      position: relative;
-    }
-    header::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-color: rgba(0, 0, 0, 0.4);
-      z-index: 0;
-    }
-    header h1 {
-      margin: 0;
-      z-index: 1;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-      /* Adaptive title size with nice wrapping on phones */
-      font-size: clamp(1.1rem, 5.2vw, 2.2rem);
-      line-height: 1.25;
-      text-wrap: balance;
-      hyphens: auto;
-      max-width: 1100px;
-    }
-    header p {
-      margin-top: 10px;
-      z-index: 1;
-      font-size: clamp(0.95rem, 3.8vw, 1.25rem);
-      max-width: min(90%, 800px);
-      font-style: italic;
-    }
-    /* Navigation bar */
-    nav {
-      background-color: #0a1931;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      padding: 0.5rem 0.75rem;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    nav a {
-      color: #fff;
-      text-decoration: none;
-      padding: 0.5rem 0.9rem;
-      border-radius: 4px;
-      transition: background-color 0.2s ease;
-      font-size: clamp(0.9rem, 2.6vw, 1rem);
-    }
-    nav a:hover {
-      background-color: rgba(255,255,255,0.2);
-    }
-    /* Section layout */
-    section {
-      max-width: 900px;
-      margin: clamp(20px, 5vw, 40px) auto;
-      padding: 0 clamp(12px, 4vw, 20px);
-    }
-    /* Paper entries */
-    .paper {
-      margin-bottom: clamp(24px, 5vw, 40px);
-    }
-    .paper h3, .paper h4 {
-      margin: 0 0 6px 0;
-      font-size: clamp(1rem, 2.8vw, 1.15rem);
-    }
-    .paper h3 a, .paper h4 a {
-      color: #0a1931;
-      text-decoration: none;
-    }
-    .paper h3 a:hover, .paper h4 a:hover {
-      text-decoration: underline;
-    }
-    .authors {
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .abstract {
-      background-color: #edf2f7;
-      padding: 15px;
-      border-left: 4px solid #0a1931;
-      border-radius: 4px;
-    }
-    .links {
-      margin-top: 10px;
-    }
-    .links a {
-      color: #0a1931;
-      text-decoration: none;
-      margin-right: 15px;
-      font-weight: 500;
-    }
-    .links a:hover {
-      text-decoration: underline;
-    }
-    /* Figure placeholders */
-    .fig-box {
-      width: 100%;
-      height: 300px;
-      background-color: #e2e8f0;
-      border: 2px dashed #cbd5e0;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #718096;
-      font-style: italic;
-      margin-bottom: 10px;
-    }
-    /* Video placeholder */
-    .video-container {
-      position: relative;
-      padding-top: 56.25%; /* 16:9 aspect ratio */
-      background-color: #e2e8f0;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .video-container iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-    }
-    .video-placeholder-text {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      color: #718096;
-      font-style: italic;
-    }
-    /* Contributor cards */
-    #Authors {
-      background-color: #f1f5f9;
-      padding: 20px;
-    }
-    #Authors .Authors-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 20px;
-      justify-items: center;
-    }
-    .contributor {
-      width: 100%;
-      max-width: 220px;
-      text-align: center;
-    }
-    .contributor img {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      object-fit: cover;
-      background-color: #cbd5e0;
-    }
-    .contributor h4 {
-      margin: 10px 0 5px;
-      font-size: 1rem;
-    }
-    .contributor p {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #555;
-    }
-    /* Preformatted BibTeX */
-    .bibtex {
-      background-color: #f7fafc;
-      padding: 15px;
-      border-left: 4px solid #0a1931;
-      border-radius: 4px;
-      overflow-x: auto;
-      font-family: monospace;
-      font-size: 0.9rem;
-    }
-    /* Related papers */
-    .related-papers ul {
-      list-style-type: disc;
-      padding-left: 20px;
-    }
-    .related-papers li {
-      margin-bottom: 8px;
-    }
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      background-color: #0a1931;
-      color: #fff;
-      font-size: 0.95rem;
-    }
-
-    /* Lab logos banner - fully adaptive trio */
-/* Lab logos banner */
-.lab-logos {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: clamp(12px, 3vw, 20px);
-  padding: clamp(10px, 3vw, 20px);
-  background-color: #f1f5f9;
-  border-top: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
-  flex-wrap: nowrap;
-  overflow: hidden;
-}
-
-.lab-logos img {
-  flex: 1 1 auto;                 /* allow scaling */
-  max-width: 180px;               /* keep full size on desktop */
-  height: auto;
-  object-fit: contain;
-  background-color: #cbd5e0;
-  border-radius: 4px;
-}
-
-/* On small screens, shrink them together proportionally */
-@media (max-width: 700px) {
-  .lab-logos img {
-    max-width: calc(33vw - 10px); /* ensures 3 fit in one row */
+  /* Base styling */
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f9fafc;
   }
-}
+  h2 { margin-top: 0; color: #0a1931; }
 
-    @media (max-width: 520px) {
-      header { min-height: 44vh; padding: 22px 14px; }
-      header h1 { font-size: clamp(1rem, 6vw, 1.6rem); line-height: 1.25; }
-      header p { font-size: clamp(0.9rem, 3.8vw, 1.05rem); }
-      /* stack nav links cleanly */
-      nav {
-        flex-direction: column;
-        gap: 0.35rem;
-        padding: 0.4rem 0.6rem;
-      }
-      nav a {
-        display: block;
-        width: 100%;
-        text-align: center;
-        padding: 0.55rem 0.75rem;
-      }
+  /* Hero section */
+  header {
+    background-image: url('pics/hero.png');
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+    min-height: 42vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: clamp(16px, 4vw, 30px) 20px;
+    position: relative;
+  }
+  header::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 0;
+  }
+  header h1 {
+    margin: 0;
+    z-index: 1;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    font-size: clamp(1.1rem, 4.8vw, 2.2rem);
+    line-height: 1.25;
+    text-wrap: balance;
+    hyphens: auto;
+    max-width: 1100px;
+  }
+  header p {
+    margin-top: 10px;
+    z-index: 1;
+    font-size: clamp(0.95rem, 3.6vw, 1.25rem);
+    max-width: min(90%, 800px);
+    font-style: italic;
+  }
+
+  /* Sections */
+  section {
+    max-width: 900px;
+    margin: clamp(20px, 5vw, 40px) auto;
+    padding: 0 clamp(12px, 4vw, 20px);
+  }
+
+  /* Paper entries */
+  .paper { margin-bottom: clamp(24px, 5vw, 40px); }
+  .paper h3, .paper h4 {
+    margin: 0 0 6px 0;
+    font-size: clamp(1rem, 2.6vw, 1.15rem);
+  }
+  .paper h3 a, .paper h4 a { color: #0a1931; text-decoration: none; }
+  .paper h3 a:hover, .paper h4 a:hover { text-decoration: underline; }
+  .authors { font-weight: 600; margin-bottom: 8px; }
+  .abstract {
+    background-color: #edf2f7;
+    padding: 15px;
+    border-left: 4px solid #0a1931;
+    border-radius: 4px;
+  }
+  .links { margin-top: 10px; }
+  .links a {
+    color: #0a1931;
+    text-decoration: none;
+    margin-right: 15px;
+    font-weight: 500;
+  }
+  .links a:hover { text-decoration: underline; }
+
+  /* Figures */
+  img { max-width: 100%; height: auto; border-radius: 10px; display: block; }
+
+  /* Video */
+  .video-container {
+    position: relative; padding-top: 56.25%;
+    background-color: #e2e8f0; border-radius: 8px; overflow: hidden;
+  }
+  .video-container iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+  /* Lab logos — 3 equal columns that shrink on phones, cap at 180px on desktop */
+  .lab-logos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    justify-items: center;
+    gap: clamp(8px, 3vw, 20px);
+    padding: clamp(10px, 3vw, 20px);
+    background-color: #f1f5f9;
+    border-top: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  .lab-logos img {
+    width: 100%;
+    max-width: 180px; /* desktop full size */
+    height: auto;
+    object-fit: contain;
+    background-color: #cbd5e0;
+    border-radius: 4px;
+  }
+
+  /* Contributors — centered grid */
+  #Authors {
+    background-color: #f1f5f9;
+    padding: 20px;
+  }
+  #Authors .Authors-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    place-items: center; /* centers each card */
+    text-align: center;
+  }
+  .contributor {
+    width: 100%;
+    max-width: 240px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .contributor img {
+    width: 110px; height: 110px;
+    border-radius: 50%; object-fit: cover; background-color: #cbd5e0;
+  }
+  .contributor h4 { margin: 10px 0 5px; font-size: 1rem; }
+  .contributor p { margin: 0; font-size: 0.9rem; color: #555; }
+
+  /* BibTeX */
+  .bibtex {
+    background-color: #f7fafc;
+    padding: 15px;
+    border-left: 4px solid #0a1931;
+    border-radius: 4px;
+    overflow-x: auto;
+    font-family: monospace;
+    font-size: 0.9rem;
+  }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #0a1931;
+    color: #fff;
+    font-size: 0.95rem;
+  }
+
+  /* --- Responsive Hamburger Navigation (CSS-only, slide-down) --- */
+  .site-nav {
+    background-color: #0a1931;
+    color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .site-nav .menu-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    padding: 0.6rem 0.8rem;
+  }
+  .site-nav .menu-links a {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+    font-size: clamp(0.9rem, 2.5vw, 1rem);
+  }
+  .site-nav .menu-links a:hover { background-color: rgba(255,255,255,0.2); }
+
+  /* Toggle elements */
+  .nav-toggle { display: none; }
+  .menu-toggle {
+    display: none;
+    cursor: pointer;
+    font-size: 1.8rem;
+    color: #fff;
+    padding: 10px 16px;
+    user-select: none;
+  }
+
+  @media (max-width: 700px) {
+    .menu-toggle { display: inline-block; }
+    .site-nav .menu-links {
+      display: block;
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 0.8rem;
+      transition: max-height 0.35s ease;
     }
+    .site-nav .menu-links a {
+      display: block;
+      padding: 0.7rem 0.5rem;
+    }
+    /* Slide down when checked */
+    .nav-toggle:checked ~ .menu-links {
+      max-height: 500px;
+      padding-bottom: 0.6rem;
+    }
+  }
 
-  </style>
+  @media (max-width: 520px) {
+    header { min-height: 44vh; padding: 22px 14px; }
+    header h1 { font-size: clamp(1rem, 6vw, 1.6rem); }
+    header p { font-size: clamp(0.9rem, 3.6vw, 1.05rem); }
+  }
+
+</style>
 </head>
 <body>
   <header>
     <h1>Stochastic Resonance for Computer Vision:<br> A Framework for Test-Time Latent Ensemble</h1>
   <p style="font-size: 1.3em; font-style: italic;">Shake your image, boost your performance.</p>
   </header>
-  <nav>
+  
+<nav class="site-nav">
+  <label for="nav-toggle" class="menu-toggle" aria-controls="nav-links">☰</label>
+  <input type="checkbox" id="nav-toggle" class="nav-toggle">
+  <div id="nav-links" class="menu-links">
     <a href="#summary">Summary</a>
     <a href="#ideas">Ideas &amp; Findings</a>
     <a href="#figures">Figures</a>
@@ -287,7 +248,9 @@
     <a href="#papers">Papers</a>
     <a href="#citations">Citations</a>
     <a href="#Authors">Authors</a>
-  </nav>
+  </div>
+</nav>
+
 
   <!-- Lab logos banner -->
   <div class="lab-logos">
