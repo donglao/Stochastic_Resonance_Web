@@ -123,7 +123,7 @@
   width: auto;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 700px) {
   .lab-logos img {
     max-height: 40px;
   }
@@ -284,7 +284,7 @@
   <!-- Summary section -->
   <section id="summary">
     <h2>Summary</h2>
-    <p>Stochastic resonance is a counter-intuitive signal processing principle: by adding a small amount of noise, one can reveal information that would otherwise be lost below a quantization or aliasing threshold. In hearing aids, for example, stochastic resonance helps make discretized digital audio more intelligible： injecting white noise into cochlear implants can enhance the perception of sub-threshold signals.</p>
+    <p>Stochastic resonance is a counterintuitive signal processing principle: by adding a small amount of noise, one can reveal information that would otherwise be lost below a quantization or aliasing threshold. In hearing aids, for example, stochastic resonance helps make discretized digital audio more intelligible: introducing white noise into cochlear implants can enhance the perception of sub-threshold signals.</p>
 
 <p>In vision, we encounter analogous forms of aliasing. Some are intentional, such as the patch tokenization used in Vision Transformers, and others are unintentional, arising from spatial downsampling. Rectangular tokens and coarse pooling disrupt the natural continuity of images, producing an artificial “grid” that does not exist in the real world.</p>
 
@@ -295,15 +295,15 @@
     <h2>Ideas &amp; Findings</h2>
     <p>At its core, our method is simple: we <em>shake</em> the image to introduce tiny translations, compute features for each perturbed view, undo the translations in the latent space, and average the results.  These micro‑translations act as purposeful noise that generates different “looks” at the same scene.  For ViTs we apply perturbations at a <strong>sub‑token</strong> scale, aligning and averaging features to build richer embeddings (see <a href="#backstory">Backstory</a> for how this idea emerged).  The entire procedure happens at test time and requires no training or network modifications.  It is agnostic to architecture and to the choice of layer where ensembling occurs. Imagine looking through a set of iron bars that break your view into coarse grids. A small head movement causes the same object to appear in different slots. When these shifted perspectives are aligned back in latent space, they reassemble into fine-grained latent representations.</p>
 
-    <p>We first explored this idea in the context of Vision Transformer tokenization.  By ensembling sub‑token perturbations we improved segmentation, classification and depth estimation by up to 14.9&nbsp;% without any fine‑tuning.  A naive implementation could be prohibitively slow and memory hungry: imagine sizing up a feature map, and doing it for dozens of shifts, but our implementation computes all shifts in parallel and folds them back efficiently, without having to compute the spatial upsampling.  The result is both fast and lightweight, turning stochastic resonance into a practical tool.</p>
+    <p>We first explored this idea in the context of Vision Transformer tokenization.  By ensembling sub‑token perturbations, we improved segmentation, classification, and depth estimation by up to 14.9% without any fine‑tuning.  A naive implementation could be prohibitively slow and memory hungry: imagine sizing up a feature map, and doing it for dozens of shifts, but our implementation computes all shifts in parallel and folds them back efficiently, without having to compute the spatial upsampling.  The result is both fast and lightweight, turning stochastic resonance into a practical tool.</p>
 
-    <p>Encouraged by these results, we asked whether “combatting noise with noise” could defend against <em>adversarial</em> perturbations.  We streamlined the theory and extended the framework beyond ViT architectures, introducing the first <strong>test‑time defense</strong> that works across classification and dense prediction tasks.  By adding small translations and aggregating the transformed embeddings we recover up to 68.1&nbsp;% of the accuracy lost to adversarial attacks on images, 71.9&nbsp;% on stereo matching and 29.2&nbsp;% on optical flow. We further investigated ensembling across different network layers and introduced rotation-based perturbations to identify effective strategies for improving adversarial robustness.</p>
+    <p>Encouraged by these results, we asked whether “combating noise with noise” could defend against <em>adversarial</em> perturbations.  We streamlined the theory and extended the framework beyond ViT architectures, introducing the first <strong>test‑time defense</strong> that works across classification and dense prediction tasks.  By adding small translations and aggregating the transformed embeddings, we recover up to 68.1&nbsp;% of the accuracy lost to adversarial attacks on images, 71.9% on stereo matching, and 29.2% on optical flow. We further investigated ensembling across different network layers and introduced rotation-based perturbations to identify effective strategies for improving adversarial robustness.</p>
 
     <p><strong>Significant Findings:</strong></p>
     <ul>
       <li>We find that stochastic resonance works off‑the‑shelf with pre‑trained models and is applied purely at test time.</li>
-      <li>Improves segmentation, classification and depth estimation tasks by up to 14.9&nbsp;% without any fine‑tuning.</li>
-      <li>Reduces performance degradation caused by adversarial attacks, recovering up to 68.1&nbsp;% of lost accuracy on image classification, 71.9&nbsp;% on stereo matching and 29.2&nbsp;% on optical flow.</li>
+      <li>Improves segmentation, classification, and depth estimation tasks by up to 14.9% without any fine‑tuning.</li>
+      <li>Reduces performance degradation caused by adversarial attacks, recovering up to 68.1% of lost accuracy on image classification, 71.9&nbsp;% on stereo matching, and 29.2&nbsp;% on optical flow.</li>
       <li>Provides the first attack‑agnostic defense that extends beyond classification to dense prediction tasks like optical flow and stereo matching.</li>
     </ul>
   </section>
@@ -346,7 +346,7 @@
 
     <p>These experiences converged on a surprisingly elegant idea: introduce small, deterministic sub-token translations, align the resulting embeddings, and aggregate them. Initially, we treated this as a visualization tool for studying ViT embeddings, but the results were unexpectedly strong: producing smoother, more detailed representations. What began as a side experiment and feature visualization toy evolved into a general ensemble mechanism, forming the foundation of the Stochastic Resonance Transformer (SRT).</p>
 
-    <p>We later realized that adversarial attacks can be viewed as another form of “turbulence.” By injecting small translations at inference and aggregating features in latent space, we found that pre‑trained vision models can be improved at test time without any fine-tuning, but simply by scaling up computation through stochastic resonance. This turned into a form of test-time scaling, opening a new direction for enhancing robustness and performance in existing models.</p>
+    <p>We later realized that adversarial attacks can be viewed as another form of “turbulence.” By inducing small translations at inference and aggregating features in latent space, we found that pre‑trained vision models can be improved at test time without any fine-tuning, but simply by scaling up computation through stochastic resonance. This turned into a form of test-time scaling, opening a new direction for enhancing robustness and performance in existing models.</p>
 
     <p>The research is ongoing. Stay tuned!</p>
   </section>
