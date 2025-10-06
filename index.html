@@ -298,13 +298,13 @@
     max-width: 800px;   /* optional: controls how wide the images can grow */
     margin: 0 auto;     /* centers the whole block */
   ">
-    <p>Stochastic Resonance enables enhancing tokenized ViT features during inference without the need for additional training or modifying ViT forward pass. Here we present enhanced features from different pre-trained ViT models, visualized via Principal Component Analysis.</p>
+    <p>Stochastic Resonance enables enhancing tokenized ViT features during inference without the need for additional training or modifying ViT forward pass. Here we present enhanced features from different pre-trained ViT models, visualized via Principal Component Analysis:</p>
     <img src="pics/fine-grained.png" alt="Figure 1" style="width:80%; height:auto; border-radius:10px; object-fit:cover;">
-    <p>Deeper layers reveal clearer high-level semantic boundaries, while shallower layers highlight more local features compared to high-level ones.</p>
+    <p>Deeper layers reveal clearer high-level semantic boundaries, while shallower layers highlight more local features compared to high-level ones:</p>
     <img src="pics/layers.png" alt="Figure 2" style="width:80%; height:auto; border-radius:10px; object-fit:cover;">
-    <p>By incorporating stochastic resonance, we demonstrate a significant reduction in prediction errors on stereo matching. This technique holds significant potential for improving robustness in safety-critical real-world applications, such as autonomous driving, where stereo vision must remain reliable under diverse environmental conditions and adversarial threats.</p>
+    <p>By incorporating stochastic resonance, we demonstrate a significant reduction in prediction errors on stereo matching. This technique holds significant potential for improving robustness in safety-critical real-world applications, such as autonomous driving, where stereo vision must remain reliable under diverse environmental conditions and adversarial threats:</p>
     <img src="pics/stereo.png" alt="Figure 3" style="width:100%; height:auto; border-radius:10px; object-fit:cover;">
-    <p>Qualitative results on optical flow (visualized with a color wheel) show that our method substantially mitigates the degradation caused by both PGD and FGSM attacks. This robustness is particularly relevant for visual perception systems that rely on accurate motion estimation.</p>
+    <p>Qualitative results on optical flow (visualized with a color wheel) show that our method substantially mitigates the degradation caused by both PGD and FGSM attacks. This robustness is particularly relevant for visual perception systems that rely on accurate motion estimation:</p>
     <img src="pics/flow.png" alt="Figure 4" style="width:100%; height:auto; border-radius:10px; object-fit:cover;">
 
   </section>
@@ -338,7 +338,7 @@
     <h3>Stochastic Resonance Papers</h3>
     <!-- Latest paper entry: adversarial defense -->
     <div class="paper">
-      <h4><a href="https://www.arxiv.org/abs/2510.03224" target="_blank" rel="noopener">Test‑Time Defense Against Adversarial Attacks via Stochastic Resonance of Latent Ensembles</a></h4>
+      <h4><a href="https://www.arxiv.org/abs/2510.03224" target="_blank" rel="noopener">Test‑Time Defense Against Adversarial Attacks via Stochastic Resonance of Latent Ensembles (arXiv)</a></h4>
       <div class="authors">Dong Lao, Yuxiang Zhang, Haniyeh Ehsani Oskouie, Yangchao Wu, Alex Wong, Stefano Soatto</div>
       <div class="abstract">
         <p>We propose a test-time defense mechanism against adversarial attacks: imperceptible image perturbations that significantly alter the predictions of a model. Unlike existing methods that rely on feature filtering or smoothing, which can lead to information loss, we propose to "combat noise with noise" by leveraging stochastic resonance to enhance robustness while minimizing information loss. Our approach introduces small translational perturbations to the input image, aligns the transformed feature embeddings, and aggregates them before mapping back to the original reference image. This can be expressed in a closed-form formula, which can be deployed on diverse existing network architectures without introducing additional network modules or fine-tuning for specific attack types. The resulting method is entirely training-free, architecture-agnostic, and attack-agnostic. Empirical results show state-of-the-art robustness on image classification and, for the first time, establish a generic test-time defense for dense prediction tasks, including stereo matching and optical flow, highlighting the method's versatility and practicality. Specifically, relative to clean (unperturbed) performance, our method recovers up to 68.1% of the accuracy loss on image classification, 71.9% on stereo matching, and 29.2% on optical flow under various types of adversarial attacks.</p>
@@ -349,7 +349,7 @@
     </div>
     <!-- SRT paper entry -->
     <div class="paper">
-      <h4><a href="https://proceedings.mlr.press/v235/lao24a.html" target="_blank" rel="noopener">Sub‑token ViT Embedding via Stochastic Resonance Transformers</a></h4>
+      <h4><a href="https://proceedings.mlr.press/v235/lao24a.html" target="_blank" rel="noopener">Sub‑token ViT Embedding via Stochastic Resonance Transformers (ICML)</a></h4>
       <div class="authors">Dong Lao, Yangchao Wu, Tian Yu Liu, Alex Wong, Stefano Soatto</div>
       <div class="abstract">
         <p>Vision Transformer (ViT) architectures represent images as collections of high-dimensional vectorized tokens, each corresponding to a rectangular non-overlapping patch. This representation trades spatial granularity for embedding dimensionality, and results in semantically rich but spatially coarsely quantized feature maps. In order to retrieve spatial details beneficial to fine-grained inference tasks we propose a training-free method inspired by "stochastic resonance." Specifically, we perform sub-token spatial transformations to the input data, and aggregate the resulting ViT features after applying the inverse transformation. The resulting "Stochastic Resonance Transformer" (SRT) retains the rich semantic information of the original representation, but grounds it on a finer-scale spatial domain, partly mitigating the coarse effect of spatial tokenization. SRT is applicable across any layer of any ViT architecture, consistently boosting performance on several tasks including segmentation, classification, depth estimation, and others by up to 14.9% without the need for any fine-tuning.</p>
@@ -363,7 +363,7 @@
     <h3>Related Papers</h3>
     <!-- AugUndo paper entry (motivational) -->
     <div class="paper">
-      <h4><a href="https://eccv2024.ecva.net/virtual/2024/poster/2093" target="_blank" rel="noopener">AugUndo: Scaling Up Augmentations for Monocular Depth Completion and Estimation</a></h4>
+      <h4><a href="https://eccv2024.ecva.net/virtual/2024/poster/2093" target="_blank" rel="noopener">AugUndo: Scaling Up Augmentations for Monocular Depth Completion and Estimation (ECCV)</a></h4>
       <div class="authors">Yangchao Wu, Tian Yu Liu, Hyoungseob Park, Stefano Soatto, Dong Lao, Alex Wong</div>
       <div class="abstract">
         <p>Unsupervised depth completion and estimation methods are trained by minimizing reconstruction error. Block artifacts from resampling, intensity saturation, and occlusions are amongst the many undesirable by-products of common data augmentation schemes that affect image reconstruction quality, and thus the training signal. Hence, typical augmentations on images viewed as essential to training pipelines in other vision tasks have seen limited use beyond small image intensity changes and flipping. The sparse depth modality in depth completion have seen even less use as intensity transformations alter the scale of the 3D scene, and geometric transformations may decimate the sparse points during resampling. We propose a method that unlocks a wide range of previously-infeasible geometric augmentations for unsupervised depth completion and estimation. This is achieved by reversing, or ``undo''-ing, geometric transformations to the coordinates of the output depth, warping the depth map back to the original reference frame. This enables computing the reconstruction losses using the original images and sparse depth maps, eliminating the pitfalls of naive loss computation on the augmented inputs and allowing us to scale up augmentations to boost performance. We demonstrate our method on indoor (VOID) and outdoor (KITTI) datasets, where we consistently improve upon recent methods across both datasets as well as generalization to four other datasets.</p>
@@ -375,7 +375,7 @@
     </div>
     <!-- Atmospheric turbulence paper entry (motivational) -->
     <div class="paper">
-      <h4><a href="https://ieeexplore.ieee.org/document/10658095" target="_blank" rel="noopener">Diffeomorphic Template Registration for Atmospheric Turbulence Mitigation</a></h4>
+      <h4><a href="https://ieeexplore.ieee.org/document/10658095" target="_blank" rel="noopener">Diffeomorphic Template Registration for Atmospheric Turbulence Mitigation (CVPR Highlight)</a></h4>
       <div class="authors">Dong Lao, Congli Wang, Alex Wong, Stefano Soatto</div>
       <div class="abstract">
         <p>We describe a method for recovering the irradiance underlying a collection of images corrupted by atmospheric turbulence. Since supervised data is often technically im-possible to obtain, assumptions and biases have to be im-posed to solve this inverse problem, and we choose to model them explicitly. Rather than initializing a latent irradiance (“template”) by heuristics to estimate deformation, we se-lect one of the images as a reference, and model the de-formation in this image by the aggregation of the optical flow from it to other images, exploiting a prior imposed by Central Limit Theorem. Then with a novel flow inversion module, the model registers each image TO the template but WITHOUT the template, avoiding artifacts related to poor template initialization. To illustrate the robustness of the method, we simply (i) select the first frame as the ref-erence and (ii) use the simplest optical flow to estimate the warpings, yet the improvement in registration is decisive in the final reconstruction, as we achieve state-of-the-art per-formance despite its simplicity. The method establishes a strong baseline that can be further improved by integrating it seamlessly into more sophisticated pipelines, or with domain-specific methods if so desired.</p>
