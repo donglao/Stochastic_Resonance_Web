@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stochastic Resonance for Computer Vision</title>
+  <style>
+    /* Base styling */
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      color: #333;
+      background-color: #f9fafc;
+    }
+    h2 {
+      margin-top: 0;
+      color: #0a1931;
+    }
+    /* Hero section */
+    header {
+      background-image: url('pics/hero.png');
+      background-size: cover;
+      background-position: center;
+      color: #fff;
+      height: 20vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+    }
+    header::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+    header h1 {
+      font-size: 2rem;
+      margin: 0;
+      z-index: 1;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+    header p {
+      margin-top: 10px;
+      font-size: 1.2rem;
+      max-width: 800px;
+      z-index: 1;
+    }
+    /* Navigation bar */
+    nav {
+      background-color: #0a1931;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+    }
+    nav a:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
+    /* Section layout */
+    section {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    /* Paper entries */
+    .paper {
+      margin-bottom: 40px;
+    }
+    .paper h3 {
+      margin: 0;
+      font-size: 1.4rem;
+    }
+    .paper h3 a {
+      color: #0a1931;
+      text-decoration: none;
+    }
+    .paper h3 a:hover {
+      text-decoration: underline;
+    }
+    .authors {
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+    .abstract {
+      background-color: #edf2f7;
+      padding: 15px;
+      border-left: 4px solid #0a1931;
+      border-radius: 4px;
+    }
+    .links {
+      margin-top: 10px;
+    }
+    .links a {
+      color: #0a1931;
+      text-decoration: none;
+      margin-right: 15px;
+      font-weight: 500;
+    }
+    .links a:hover {
+      text-decoration: underline;
+    }
+    /* Figure placeholders */
+    .fig-box {
+      width: 100%;
+      height: 300px;
+      background-color: #e2e8f0;
+      border: 2px dashed #cbd5e0;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #718096;
+      font-style: italic;
+      margin-bottom: 10px;
+    }
+    /* Video placeholder */
+    .video-container {
+      position: relative;
+      padding-top: 56.25%; /* 16:9 aspect ratio */
+      background-color: #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .video-placeholder-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #718096;
+      font-style: italic;
+    }
+    /* Contributor cards */
+    #Authors {
+      background-color: #f1f5f9;
+      padding: 20px 20px;
+    }
+    #Authors .Authors-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+    .contributor {
+      width: 200px;
+      text-align: center;
+    }
+    .contributor img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      background-color: #cbd5e0;
+    }
+    .contributor h4 {
+      margin: 10px 0 5px;
+      font-size: 1.1rem;
+    }
+    .contributor p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    /* Preformatted BibTeX */
+    .bibtex {
+      background-color: #f7fafc;
+      padding: 15px;
+      border-left: 4px solid #0a1931;
+      border-radius: 4px;
+      overflow-x: auto;
+      font-family: monospace;
+      font-size: 0.9rem;
+    }
+    /* Related papers */
+    .related-papers ul {
+      list-style-type: disc;
+      padding-left: 20px;
+    }
+    .related-papers li {
+      margin-bottom: 8px;
+    }
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #0a1931;
+      color: #fff;
+    }
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+    }
+
+    /* Lab logos banner */
+    .lab-logos {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      padding: 20px;
+      background-color: #f1f5f9;
+      border-top: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .lab-logos img {
+      height: 40px;
+      width: auto;
+      object-fit: contain;
+      background-color: #cbd5e0;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Stochastic Resonance for Computer Vision:<br> A Framework for Test-Time Latent Ensemble</h1>
+  <p style="font-size: 1.3em; font-style: italic;">Shake your image, boost your performance.</p>
+  </header>
+  <nav>
+    <a href="#summary">Summary</a>
+    <a href="#ideas">Ideas &amp; Findings</a>
+    <a href="#figures">Figures</a>
+    <a href="#video">Video</a>
+    <a href="#backstory">Backstory</a>
+    <a href="#papers">Papers</a>
+    <a href="#citations">Citations</a>
+    <a href="#Authors">Authors</a>
+  </nav>
+
+  <!-- Lab logos banner -->
+  <div class="lab-logos">
+    <img src="pics/LSU.png" alt="LSU Vision Lab logo">
+    <img src="pics/Yale.png" alt="Yale Vision Lab logo">
+    <img src="pics/UCLA.png" alt="UCLA Vision Lab logo">
+  </div>
+  <!-- Summary section -->
+  <section id="summary">
+    <h2>Summary</h2>
+    <p>Stochastic resonance is a counter-intuitive signal processing principle: by adding a small amount of noise, one can reveal information that would otherwise be lost below a quantization or aliasing threshold. In hearing aids, for example, stochastic resonance helps make discretized digital audio more intelligible： injecting white noise into cochlear implants can enhance the perception of sub-threshold signals.</p>
+
+<p>In vision, we encounter analogous forms of aliasing. Some are intentional, such as the patch tokenization used in Vision Transformers, and others are unintentional, arising from spatial downsampling. Rectangular tokens and coarse pooling disrupt the natural continuity of images, producing an artificial “grid” that does not exist in the real world.</p>
+
+<p>Our approach introduces carefully controlled noise by slightly perturbing (shaking) the image, generating multiple subtly misaligned views. These are then realigned and aggregated in latent space, allowing the model to recover fine-grained details beyond its nominal resolution. In effect, stochastic resonance transforms noise from a nuisance into a signal, turning perturbations into a tool for enhancing visual perception.</p>
+  </section>
+  <!-- Ideas and Findings section -->
+  <section id="ideas">
+    <h2>Ideas &amp; Findings</h2>
+    <p>At its core, our method is simple: we <em>shake</em> the image to introduce tiny translations, compute features for each perturbed view, undo the translations in the latent space, and average the results.  These micro‑translations act as purposeful noise that generates different “looks” at the same scene.  For ViTs we apply perturbations at a <strong>sub‑token</strong> scale, aligning and averaging features to build richer embeddings (see <a href="#backstory">Backstory</a> for how this idea emerged).  The entire procedure happens at test time and requires no training or network modifications.  It is agnostic to architecture and to the choice of layer where ensembling occurs. Imagine looking through a set of iron bars that break your view into coarse grids. A small head movement causes the same object to appear in different slots. When these shifted perspectives are aligned back in latent space, they reassemble into fine-grained latent representations.</p>
+
+    <p>We first explored this idea in the context of Vision Transformer tokenization.  By ensembling sub‑token perturbations we improved segmentation, classification and depth estimation by up to 14.9&nbsp;% without any fine‑tuning.  A naive implementation could be prohibitively slow and memory hungry: imagine sizing up a feature map, and doing it for dozens of shifts, but our implementation computes all shifts in parallel and folds them back efficiently, without having to compute the spatial upsampling.  The result is both fast and lightweight, turning stochastic resonance into a practical tool.</p>
+
+    <p>Encouraged by these results, we asked whether “combatting noise with noise” could defend against <em>adversarial</em> perturbations.  We streamlined the theory and extended the framework beyond ViT architectures, introducing the first <strong>test‑time defense</strong> that works across classification and dense prediction tasks.  By adding small translations and aggregating the transformed embeddings we recover up to 68.1&nbsp;% of the accuracy lost to adversarial attacks on images, 71.9&nbsp;% on stereo matching and 29.2&nbsp;% on optical flow. We further investigated ensembling across different network layers and introduced rotation-based perturbations to identify effective strategies for improving adversarial robustness.</p>
+
+    <p><strong>Significant Findings:</strong></p>
+    <ul>
+      <li>We find that stochastic resonance works off‑the‑shelf with pre‑trained models and is applied purely at test time.</li>
+      <li>Improves segmentation, classification and depth estimation tasks by up to 14.9&nbsp;% without any fine‑tuning.</li>
+      <li>Reduces performance degradation caused by adversarial attacks, recovering up to 68.1&nbsp;% of lost accuracy on image classification, 71.9&nbsp;% on stereo matching and 29.2&nbsp;% on optical flow.</li>
+      <li>Provides the first attack‑agnostic defense that extends beyond classification to dense prediction tasks like optical flow and stereo matching.</li>
+    </ul>
+  </section>
+  <!-- Figures & visualizations section -->
+<section id="figures">
+  <h2>Figures</h2>
+  <div style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 800px;   /* optional: controls how wide the images can grow */
+    margin: 0 auto;     /* centers the whole block */
+  ">
+    <p>Stochastic Resonance enables enhancing tokenized ViT features during inference without the need for additional training or modifying ViT forward pass. Here we present enhanced features from different pre-trained ViT models, visualized via Principal Component Analysis.</p>
+    <img src="pics/fine-grained.png" alt="Figure 1" style="width:80%; height:auto; border-radius:10px; object-fit:cover;">
+    <p>Deeper layers reveal clearer high-level semantic boundaries, while shallower layers highlight more local features compared to high-level ones.</p>
+    <img src="pics/layers.png" alt="Figure 2" style="width:80%; height:auto; border-radius:10px; object-fit:cover;">
+    <p>By incorporating stochastic resonance, we demonstrate a significant reduction in prediction errors on stereo matching. This technique holds significant potential for improving robustness in safety-critical real-world applications, such as autonomous driving, where stereo vision must remain reliable under diverse environmental conditions and adversarial threats.</p>
+    <img src="pics/stereo.png" alt="Figure 3" style="width:100%; height:auto; border-radius:10px; object-fit:cover;">
+    <p>Qualitative results on optical flow (visualized with a color wheel) show that our method substantially mitigates the degradation caused by both PGD and FGSM attacks. This robustness is particularly relevant for visual perception systems that rely on accurate motion estimation.</p>
+    <img src="pics/flow.png" alt="Figure 4" style="width:100%; height:auto; border-radius:10px; object-fit:cover;">
+
+  </section>
+  <!-- Video section -->
+  <section id="video">
+    <h2>Video Presentation</h2>
+    <div class="video-container">
+      <!-- Replace the following iframe src with your YouTube video ID -->
+      <iframe src="https://www.youtube.com/embed/" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <div class="video-placeholder-text">To be updated.</div>
+    </div>
+  </section>
+  <!-- Backstory section -->
+  <section id="backstory">
+    <h2>Backstory</h2>
+    <p>Our exploration of stochastic resonance began with a simple frustration: the coarse “grid” imposed by vision transformers and the quantization artifacts that come with it. Discretizing an image into large tokens destroys fine spatial details and disrupts natural regularities. We wanted a solution that was simple, principled, and broadly applicable. We want to avoid the need to train a separate correction module for every architecture.</p>
+
+    <p>In 2023, we happened to be working on two seemingly unrelated projects. One focused on atmospheric turbulence, where we discovered that registering distorted frames into a common coordinate system allows multiple noisy images to be combined into a reconstruction sharper than any single frame (a result later highlighted at CVPR 2024). The other, AugUndo, reversed geometric augmentations by warping predictions back to the original frame, enabling a wide range of augmentations while preserving geometric consistency.</p>
+
+    <p>These experiences converged on a surprisingly elegant idea: introduce small, deterministic sub-token translations, align the resulting embeddings, and aggregate them. Initially, we treated this as a visualization tool for studying ViT embeddings, but the results were unexpectedly strong: producing smoother, more detailed representations. What began as a side experiment and feature visualization toy evolved into a general ensemble mechanism, forming the foundation of the Stochastic Resonance Transformer (SRT).</p>
+
+    <p>We later realized that adversarial attacks can be viewed as another form of “turbulence.” By injecting small translations at inference and aggregating features in latent space, we found that pre‑trained vision models can be improved at test time without any fine-tuning, but simply by scaling up computation through stochastic resonance. This turned into a form of test-time scaling, opening a new direction for enhancing robustness and performance in existing models.</p>
+
+    <p>The research is ongoing. Stay tuned!</p>
+  </section>
+
+  <!-- Papers section -->
+  <section id="papers">
+    <h2>Papers</h2>
+    <!-- Subsection: Stochastic Resonance Papers -->
+    <h3>Stochastic Resonance Papers</h3>
+    <!-- Latest paper entry: adversarial defense -->
+    <div class="paper">
+      <h4><a href="https://www.arxiv.org/abs/2510.03224" target="_blank" rel="noopener">Test‑Time Defense Against Adversarial Attacks via Stochastic Resonance of Latent Ensembles</a></h4>
+      <div class="authors">Dong Lao, Yuxiang Zhang, Haniyeh Ehsani Oskouie, Yangchao Wu, Alex Wong, Stefano Soatto</div>
+      <div class="abstract">
+        <p>We propose a test-time defense mechanism against adversarial attacks: imperceptible image perturbations that significantly alter the predictions of a model. Unlike existing methods that rely on feature filtering or smoothing, which can lead to information loss, we propose to "combat noise with noise" by leveraging stochastic resonance to enhance robustness while minimizing information loss. Our approach introduces small translational perturbations to the input image, aligns the transformed feature embeddings, and aggregates them before mapping back to the original reference image. This can be expressed in a closed-form formula, which can be deployed on diverse existing network architectures without introducing additional network modules or fine-tuning for specific attack types. The resulting method is entirely training-free, architecture-agnostic, and attack-agnostic. Empirical results show state-of-the-art robustness on image classification and, for the first time, establish a generic test-time defense for dense prediction tasks, including stereo matching and optical flow, highlighting the method's versatility and practicality. Specifically, relative to clean (unperturbed) performance, our method recovers up to 68.1% of the accuracy loss on image classification, 71.9% on stereo matching, and 29.2% on optical flow under various types of adversarial attacks.</p>
+      </div>
+      <div class="links">
+        <a href="https://www.arxiv.org/pdf/2510.03224" target="_blank" rel="noopener">Download Paper</a>
+      </div>
+    </div>
+    <!-- SRT paper entry -->
+    <div class="paper">
+      <h4><a href="https://proceedings.mlr.press/v235/lao24a.html" target="_blank" rel="noopener">Sub‑token ViT Embedding via Stochastic Resonance Transformers</a></h4>
+      <div class="authors">Dong Lao, Yangchao Wu, Tian Yu Liu, Alex Wong, Stefano Soatto</div>
+      <div class="abstract">
+        <p>Vision Transformer (ViT) architectures represent images as collections of high-dimensional vectorized tokens, each corresponding to a rectangular non-overlapping patch. This representation trades spatial granularity for embedding dimensionality, and results in semantically rich but spatially coarsely quantized feature maps. In order to retrieve spatial details beneficial to fine-grained inference tasks we propose a training-free method inspired by "stochastic resonance." Specifically, we perform sub-token spatial transformations to the input data, and aggregate the resulting ViT features after applying the inverse transformation. The resulting "Stochastic Resonance Transformer" (SRT) retains the rich semantic information of the original representation, but grounds it on a finer-scale spatial domain, partly mitigating the coarse effect of spatial tokenization. SRT is applicable across any layer of any ViT architecture, consistently boosting performance on several tasks including segmentation, classification, depth estimation, and others by up to 14.9% without the need for any fine-tuning.</p>
+      </div>
+      <div class="links">
+        <a href="https://raw.githubusercontent.com/mlresearch/v235/main/assets/lao24a/lao24a.pdf" target="_blank" rel="noopener">Download Paper</a>
+        <a href="https://github.com/donglao/srt" target="_blank" rel="noopener">Code</a>
+      </div>
+    </div>
+    <!-- Subsection: Related Papers -->
+    <h3>Related Papers</h3>
+    <!-- AugUndo paper entry (motivational) -->
+    <div class="paper">
+      <h4><a href="https://eccv2024.ecva.net/virtual/2024/poster/2093" target="_blank" rel="noopener">AugUndo: Scaling Up Augmentations for Monocular Depth Completion and Estimation</a></h4>
+      <div class="authors">Yangchao Wu, Tian Yu Liu, Hyoungseob Park, Stefano Soatto, Dong Lao, Alex Wong</div>
+      <div class="abstract">
+        <p>Unsupervised depth completion and estimation methods are trained by minimizing reconstruction error. Block artifacts from resampling, intensity saturation, and occlusions are amongst the many undesirable by-products of common data augmentation schemes that affect image reconstruction quality, and thus the training signal. Hence, typical augmentations on images viewed as essential to training pipelines in other vision tasks have seen limited use beyond small image intensity changes and flipping. The sparse depth modality in depth completion have seen even less use as intensity transformations alter the scale of the 3D scene, and geometric transformations may decimate the sparse points during resampling. We propose a method that unlocks a wide range of previously-infeasible geometric augmentations for unsupervised depth completion and estimation. This is achieved by reversing, or ``undo''-ing, geometric transformations to the coordinates of the output depth, warping the depth map back to the original reference frame. This enables computing the reconstruction losses using the original images and sparse depth maps, eliminating the pitfalls of naive loss computation on the augmented inputs and allowing us to scale up augmentations to boost performance. We demonstrate our method on indoor (VOID) and outdoor (KITTI) datasets, where we consistently improve upon recent methods across both datasets as well as generalization to four other datasets.</p>
+      </div>
+      <div class="links">
+        <a href="https://www.ecva.net/papers/eccv_2024/papers_ECCV/papers/08100.pdf" target="_blank" rel="noopener">Download Paper</a>
+        <a href="https://github.com/alexklwong/augundo" target="_blank" rel="noopener">Code</a>
+      </div>
+    </div>
+    <!-- Atmospheric turbulence paper entry (motivational) -->
+    <div class="paper">
+      <h4><a href="https://ieeexplore.ieee.org/document/10658095" target="_blank" rel="noopener">Diffeomorphic Template Registration for Atmospheric Turbulence Mitigation</a></h4>
+      <div class="authors">Dong Lao, Congli Wang, Alex Wong, Stefano Soatto</div>
+      <div class="abstract">
+        <p>We describe a method for recovering the irradiance underlying a collection of images corrupted by atmospheric turbulence. Since supervised data is often technically im-possible to obtain, assumptions and biases have to be im-posed to solve this inverse problem, and we choose to model them explicitly. Rather than initializing a latent irradiance (“template”) by heuristics to estimate deformation, we se-lect one of the images as a reference, and model the de-formation in this image by the aggregation of the optical flow from it to other images, exploiting a prior imposed by Central Limit Theorem. Then with a novel flow inversion module, the model registers each image TO the template but WITHOUT the template, avoiding artifacts related to poor template initialization. To illustrate the robustness of the method, we simply (i) select the first frame as the ref-erence and (ii) use the simplest optical flow to estimate the warpings, yet the improvement in registration is decisive in the final reconstruction, as we achieve state-of-the-art per-formance despite its simplicity. The method establishes a strong baseline that can be further improved by integrating it seamlessly into more sophisticated pipelines, or with domain-specific methods if so desired.</p>
+      </div>
+      <div class="links">
+        <a href="https://openaccess.thecvf.com/content/CVPR2024/papers/Lao_Diffeomorphic_Template_Registration_for_Atmospheric_Turbulence_Mitigation_CVPR_2024_paper.pdf" target="_blank" rel="noopener">Download Paper</a>
+        <a href="code/Lao_Diffeomorphic_Template_Registration_CVPR_2024_supplemental.zip" target="_blank" rel="noopener">Code</a>
+
+      </div>
+    </div>
+  </section>
+  <!-- Citations section -->
+  <section id="citations">
+    <h2>Citations (BibTeX)</h2>
+    <!-- BibTeX entries for Stochastic Resonance papers -->
+    <h3>Stochastic Resonance Papers</h3>
+    <div class="bibtex">
+<pre>
+@article{lao2025adversarial,
+  title={Test-Time Defense Against Adversarial Attacks via Stochastic Resonance of Latent Ensembles},
+  author={Lao, Dong and Zhang, Yuxiang and Ehsani Oskouie, Haniyeh and Wu, Yangchao and Wong, Alex and Soatto, Stefano},
+  journal={arXiv preprint},
+  year={2025}
+}
+
+@inproceedings{lao2024sub,
+  title={Sub-token ViT Embedding via Stochastic Resonance Transformers},
+  author={Lao, Dong and Wu, Yangchao and Liu, Tian Yu and Wong, Alex and Soatto, Stefano},
+  booktitle={International Conference on Machine Learning},
+  pages={25995--26006},
+  year={2024},
+  organization={PMLR}
+}
+
+</pre>
+    </div>
+    <!-- BibTeX entries for related papers -->
+    <h3>Related Papers</h3>
+    <div class="bibtex">
+<pre>
+@inproceedings{wu2024augundo,
+  title={Augundo: Scaling up augmentations for monocular depth completion and estimation},
+  author={Wu, Yangchao and Liu, Tian Yu and Park, Hyoungseob and Soatto, Stefano and Lao, Dong and Wong, Alex},
+  booktitle={European Conference on Computer Vision},
+  pages={274--293},
+  year={2024},
+  organization={Springer}
+}
+
+@inproceedings{lao2024diffeomorphic,
+  title={Diffeomorphic template registration for atmospheric turbulence mitigation},
+  author={Lao, Dong and Wang, Congli and Wong, Alex and Soatto, Stefano},
+  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
+  pages={25107--25116},
+  year={2024}
+}
+</pre>
+    </div>
+  </section>
+  <!-- Authors section -->
+    <section id="Authors">
+    <h2>Authors and Contributors</h2>
+    <div class="Authors-grid">
+      <!-- Dong Lao -->
+      <div class="contributor">
+        <img src="pics/Dong.jpg" alt="Dong Lao">
+        <h4>Dong Lao</h4>
+        <p>Assistant Professor<br>LSU (previously at UCLA)</p>
+      </div>
+      <!-- Yuxiang Zhang -->
+      <div class="contributor">
+        <img src="pics/Brandon.jpg" alt="Yuxiang Zhang">
+        <h4>Yuxiang Zhang</h4>
+        <p>Undergraduate Student<br>UCLA</p>
+      </div>
+      <!-- Haniyeh Ehsani Oskouie -->
+      <div class="contributor">
+        <img src="pics/Haniyeh.png" alt="Haniyeh Ehsani Oskouie">
+        <h4>Haniyeh Ehsani Oskouie</h4>
+        <p>Graduate Student<br>UCLA</p>
+      </div>
+      <!-- Yangchao Wu -->
+      <div class="contributor">
+        <img src="pics/Yangchao.jpg" alt="Yangchao Wu">
+        <h4>Yangchao Wu</h4>
+        <p>Graduate Student<br>UCLA</p>
+      </div>
+      <!-- Congli Wang -->
+      <div class="contributor">
+        <img src="pics/Congli.jpg" alt="Congli Wang">
+        <h4>Congli Wang</h4>
+        <p>Postdoc<br>Princeton</p>
+      </div>
+      <!-- Hyoungseob Park -->
+      <div class="contributor">
+        <img src="pics/Hyoungseob.jpg" alt="Hyoungseob Park">
+        <h4>Hyoungseob Park</h4>
+        <p>Graduate Student<br>Yale</p>
+      </div>
+      <!-- Tian Yu Liu -->
+      <div class="contributor">
+        <img src="pics/Tianyu.jpg" alt="Tian Yu Liu">
+        <h4>Tian Yu Liu</h4>
+        <p>Graduate Student<br>Waymo (previously at UCLA)</p>
+      </div>
+      <!-- Alex Wong -->
+      <div class="contributor">
+        <img src="pics/Alex.jpg" alt="Alex Wong">
+        <h4>Alex Wong</h4>
+        <p>Assistant Professor<br>Yale</p>
+      </div>
+      <!-- Stefano Soatto -->
+      <div class="contributor">
+        <img src="pics/Stefano.png" alt="Stefano Soatto">
+        <h4>Stefano Soatto</h4>
+        <p>Professor<br>UCLA &amp AWS</p>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <p>&copy; 2025&nbsp;Visual Stochastic Resonance Research. All rights reserved.</p>
+  </footer>
+</body>
+</html>
