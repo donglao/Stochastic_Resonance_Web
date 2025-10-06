@@ -223,35 +223,35 @@
     }
 
     /* Lab logos banner - fully adaptive trio */
-    .lab-logos {
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      align-items: center;
-      gap: clamp(8px, 3vw, 20px);
-      padding: clamp(10px, 3vw, 20px);
-      background-color: #f1f5f9;
-      border-top: 1px solid #e2e8f0;
-      border-bottom: 1px solid #e2e8f0;
-    }
-    .lab-logos img {
-      width: clamp(80px, 28vw, 140px);  /* 3 × 28vw + gaps fits phones */
-      height: auto;
-      object-fit: contain;
-      background-color: #cbd5e0;
-      border-radius: 4px;
-      flex: 0 0 auto;
-    }
+/* Lab logos banner */
+.lab-logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(12px, 3vw, 20px);
+  padding: clamp(10px, 3vw, 20px);
+  background-color: #f1f5f9;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
 
-    /* Responsive tweaks */
-    @media (max-width: 640px) {
-      nav {
-        align-items: stretch;
-      }
-      nav a {
-        flex: 1 1 auto;
-      }
-    }
+.lab-logos img {
+  flex: 1 1 auto;                 /* allow scaling */
+  max-width: 180px;               /* keep full size on desktop */
+  height: auto;
+  object-fit: contain;
+  background-color: #cbd5e0;
+  border-radius: 4px;
+}
+
+/* On small screens, shrink them together proportionally */
+@media (max-width: 700px) {
+  .lab-logos img {
+    max-width: calc(33vw - 10px); /* ensures 3 fit in one row */
+  }
+}
 
     @media (max-width: 520px) {
       header { min-height: 44vh; padding: 22px 14px; }
